@@ -1,0 +1,29 @@
+.wrapper
+  .side-bar
+    = render "devise/shared/side_bar"
+
+  .main
+    .header
+      .left-header
+        .left-header__name
+          %h2
+            = @group.name
+        .left-header__members 
+          %p Member :
+          - @group.users.each do |user|
+            %li
+              = user.name
+      .right-header
+        = link_to "Edit", edit_group_path(@group), class: "right-header__button"
+      
+    .messages
+      = render @messages
+
+    .form
+      = form_for [@group, @message] do |f|
+        = f.text_field :text, class: 'form__message', placeholder: 'type a message'
+        .form__mask
+          = f.label :image, class: 'form__mask__image' do
+            = fa_icon 'picture-o', class: 'icon'
+            = f.file_field :image, class: 'hidden'
+        = f.submit 'Send', class: 'form__submit' 
