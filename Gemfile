@@ -72,3 +72,7 @@ gem 'devise'
 gem 'mini_magick', '~> 4.8'
 gem 'carrierwave'
 gem 'rails-i18n'
+
+group :production do
+  gem 'unicorn'
+end
