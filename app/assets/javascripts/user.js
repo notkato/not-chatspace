@@ -48,7 +48,7 @@ $(function() {
           });
         }
       });
-
+    
     var search_list_add = $(".user-add-result");
     function addUser(user_id, user_name) {
       var html = `<div class='chat-group-user clearfix'>

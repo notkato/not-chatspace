@@ -19,7 +19,6 @@ $(function(){
     return html;
   }
 
-
   $('#new_message').on('submit', function(e){
     e.preventDefault();
 
