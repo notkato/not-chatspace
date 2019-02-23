@@ -48,20 +48,22 @@ $(function() {
           });
         }
       });
-  
+
+    var search_list_add = $(".user-add-result");
     function addUser(user_id, user_name) {
       var html = `<div class='chat-group-user clearfix'>
                     <input name='group[user_ids][]' type='hidden' value='${user_id}'>
-                      <p class='chat-group-user__name'>${user_name}</p>
-                      <a class='user-search-remove chat-group-user__btn chat-group-user__btn--remove js-remove-btn'>削除</a>
+                    <p class='chat-group-user__name'>${user_name}</p>
+                    <a class='user-search-remove chat-group-user__btn chat-group-user__btn--remove js-remove-btn'>削除</a>
                   </div>`
-      $('.chat-group-form__field--right#chat_group_users').append(html);
+      search_list_add.append(html);
     }
   
     // 追加クリック時
     $('#user-search-result').on('click','.chat-group-user__btn--add',function(){
-      var user_id = $(this).data('user-id');
-      var user_name = $(this).data('user-name');
+      var user_id = $('.user-search-add').attr('data-user-id');
+      var user_name = $('.user-search-add').attr('data-user-name');
+      console.log(user_id, user_name);
       addUser(user_id, user_name);
       $(this).parent().remove();
     });

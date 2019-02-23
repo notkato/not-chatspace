@@ -1,18 +1,18 @@
 $(function(){
   function buildMessageHTML(message){
-    var image_url = (message.image_url)? `<image class="LowerMessage_image" src="${message.image_url}">`:"";
-    var html = `<div class="Message" data-message-id=${message.id}>
-                  <div class="UpperMessage" >
-                    <div class="UpperMessage__user-name">
+    var image_url = (message.image_url)? `<image class="lower-message__image" src="${message.image.url}">`:"";
+    var html = `<div class="message" data-message-id=${message.id}>
+                  <div class="upper-message" >
+                    <div class="upper-message__user-name">
                     ${message.name}
                     </div>
-                    <div class="UpperMessage__date">
-                    ${message.time}
+                    <div class="upper-message__date">
+                    ${message.created_at}
                     </div>
                   </div>
-                  <div class="LowerMessage">
-                    <p class="LowerMessage__content">
-                    ${message.content}
+                  <div class="lower-message">
+                    <p class="lower-message__content">
+                    ${message.text}
                     </p>
                     <img src='${image_url}'>
                   </div>`
@@ -20,11 +20,11 @@ $(function(){
   }
 
 
-  $('.new_message').on('submit', function(e){
+  $('#new_message').on('submit', function(e){
     e.preventDefault();
 
     var formData = new FormData(this);
-    var url = $('.Footer').attr('action');
+    var url = $('.form').attr('action');
 
     $.ajax({
       url: url,
@@ -37,45 +37,34 @@ $(function(){
 
     .done(function(message){
       var html = buildMessageHTML(message);
-      $('.Messages').append(html); 
-      $('.new_message')[0].reset();
-      $('.Footer__btn').attr("disabled",false);
-      $('.Messages').animate({scrollTop: $(".Messages")[0].scrollHeight }, 'fast');
+      $('.messages').append(html); 
+      $('#new_message')[0].reset();
+      $('.form__submit').removeAttr("disabled");
+      $('.message').animate({scrollBottom:$('.messages')[0].scrollHeight},500, 'fast');
     })
     
     .fail(function(){
       alert('入力してください');
-      $(".Footer__btn").attr("disabled",false);
+      $(".form__submit").removeAttr("disabled");
     })
   });
-  $(function(){
-    autoUpdateTimer = setInterval(autoMessageUpdate, 5000);
-  });
-  function autoMessageUpdate(){
-    var url = location.href;
-    if(url.match(/\/groups\/\d+\/messages/)){
-      var message_id = $('.Message').last().data('message-id');
+  if (location.href.match(/\/groups\/\d+\/messages/)){
+    setInterval(function(){
       $.ajax({
-        url: url,
         type: 'GET',
-        data: {id : message_id},
+        url: location.href,
         dataType: 'json'
       })
-      
       .done(function(messages){
-        if (messages.length !== 0){
-          messages.forEach(function(message){
-            var html = buildMessageHTML(message);
-            $('.Messages').append(html);
-            $('.Messages').animate({scrollTop: $(".Messages")[0].scrollHeight }, 'fast');  
-          })
-        }
+        $('.messages').empty();
+        messages.forEach(function(message){
+          var html = buildMessageHTML(message);
+          $('.messages').append(html);
+        });
       })
       .fail(function(){
-        alert('自動更新に失敗しました')
-      })
-    } else {
-      clearInterval(autoUpdateTimer);
-    }
-  }
+        alert('自動更新に失敗しました');
+      });
+    },5000)
+  };
 });
