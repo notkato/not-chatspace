@@ -43,7 +43,6 @@ group :development, :test do
   gem 'rails-controller-testing'
   gem 'factory_girl_rails', '~> 4.0'
   gem 'faker'
-  gem 'font-awesome-rails'
   gem 'pry-rails'
 end
 
@@ -73,6 +72,8 @@ gem 'mini_magick', '~> 4.8'
 gem 'carrierwave'
 gem 'rails-i18n'
 gem "jquery-rails"
+gem 'sass'
+gem 'font-awesome-rails'
 
 group :production do
   gem 'unicorn'
